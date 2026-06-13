@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { GenresModule } from './genres/genres.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { RatingModule } from './rating/rating.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { ConfigModule } from '@nestjs/config';
     autoLoadEntities: true,
     synchronize: true,
     ssl: { rejectUnauthorized: false },
-  }),],
+  }),
+    RatingModule,],
     controllers: [AppController],
     providers: [AppService],
   })
