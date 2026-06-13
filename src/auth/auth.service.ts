@@ -83,7 +83,8 @@ async create(createUserDto: CreateUserDto): Promise <ResponseUserDto> {
     const payload = {
         sub: emailExist.id,
         name: emailExist.name,
-        email: emailExist.email
+        email: emailExist.email,
+        role: emailExist.role,
     };
 
     const token = await this.jwtService.signAsync(payload);
