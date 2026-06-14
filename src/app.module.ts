@@ -6,10 +6,12 @@ import { GenresModule } from './genres/genres.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { RatingModule } from './rating/rating.module';
+import { BooksModule } from './books/books.module';
 
 @Module({
   imports: [
     AuthModule,
+    BooksModule,
     GenresModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
