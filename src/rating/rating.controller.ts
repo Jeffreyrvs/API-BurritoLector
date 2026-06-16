@@ -13,7 +13,7 @@ export class RatingController {
 
   @Post()
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  //@Roles(Role.ADMIN)
   create(@Body() createRatingDto: CreateRatingDto) {
     return this.ratingService.create(createRatingDto);
   }
@@ -32,14 +32,14 @@ export class RatingController {
 
   @Patch(':id')
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  //@Roles(Role.ADMIN)
   update(@Param('id', ParseIntPipe) id: number, @Body() updateRatingDto: UpdateRatingDto) {
     return this.ratingService.update(id, updateRatingDto);
   }
 
   @Delete(':bookId')
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  //@Roles(Role.ADMIN)
   remove(@Param('bookId', ParseIntPipe) bookId: number) {
     return this.ratingService.remove(bookId);
   }
