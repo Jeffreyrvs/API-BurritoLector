@@ -7,28 +7,28 @@ import { Roles } from '../common/decorators/roles.decorator';
 
 @Controller('users')
 export class UsersController {
-    constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
-    @Get('affinity/:id')
-    @UseGuards(AuthGuard, RolesGuard)
-    @Roles(Role.USER)
-    getAffinity(@Request() req: any, @Param('id', ParseIntPipe) otherUserId: number) {
-        const currentUserId = Number(req.user?.sub);
-        if (!currentUserId || Number.isNaN(currentUserId)) {
-            throw new BadRequestException('Usuario no autenticado o ID inválido en el token');
-        }
-        return this.usersService.getAffinity(currentUserId, otherUserId);
+  @Get('affinity/:id')
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.USER)
+  getAffinity(@Request() req: any, @Param('id', ParseIntPipe) otherUserId: number) {
+    const currentUserId = Number(req.user?.sub);
+    if (!currentUserId || Number.isNaN(currentUserId)) {
+      throw new BadRequestException('Usuario no autenticado o ID inválido en el token');
     }
-
-    @Get('afinidad')
-@UseGuards(AuthGuard, RolesGuard)
-@Roles(Role.USER)
-getAffinityTable(@Request() req: any) {
-  const currentUserId = Number(req.user?.sub);
-  if (!currentUserId || Number.isNaN(currentUserId)) {
-    throw new BadRequestException('Usuario no autenticado');
+    return this.usersService.getAffinity(currentUserId, otherUserId);
   }
-  return this.usersService.getAffinityTable(currentUserId);
-}
+
+  @Get('afinidad')
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.USER)
+  getAffinityTable(@Request() req: any) {
+    const currentUserId = Number(req.user?.sub);
+    if (!currentUserId || Number.isNaN(currentUserId)) {
+      throw new BadRequestException('Usuario no autenticado');
+    }
+    return this.usersService.getAffinityTable(currentUserId);
+  }
 
 }
