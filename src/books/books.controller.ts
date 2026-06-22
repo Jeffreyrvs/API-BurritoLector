@@ -46,4 +46,9 @@ export class BooksController {
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.booksService.remove(id);
   }
+
+  @Get('contar')
+  contarLibros() {
+    return this.booksService.contarLibros();
+  }
 }

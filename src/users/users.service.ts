@@ -1,11 +1,12 @@
 import { Injectable, NotFoundException, BadRequestException, InternalServerErrorException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { In, Not, Repository } from 'typeorm';
 import { User } from '../auth/entities/user.entity';
 import { Rating } from '../rating/entities/rating.entity';
 import { Book } from '../books/entities/book.entity';
 import { AffinityResponseDto } from './dto/affinity-response.dto';
 import { AffinityBookDto, SimilarBookDto } from './dto/affinity-book.dto';
+import { Role } from '../role.enum';
 
 interface CommonBook {
   bookId: number;
@@ -150,7 +151,7 @@ export class UsersService {
       ]);
 
       const bookMap = new Map(books.map(b => [b.id, b.title]));
-      const userMap = new Map(users.map(u => [u.id, u.name])); // ajusta 'name' si tu campo es distinto
+      const userMap = new Map(users.map(u => [u.id, u.name])); 
 
       // 4. Construir filas
       return othersFiltered.map(r => ({
@@ -167,4 +168,16 @@ export class UsersService {
       throw new InternalServerErrorException('Error al obtener tabla de afinidad');
     }
   }
+
+  // Metodos adicionales 
+  async contarLectores() {
+    const total = await this.userRepository.count({
+      where: {
+        role: Not(Role.ADMIN),
+      },
+    });
+
+    return { total };
+  }
+
 }

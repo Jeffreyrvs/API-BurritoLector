@@ -44,12 +44,17 @@ export class RatingController {
     return this.ratingService.remove(bookId);
   }
 
-  @Get('book/:bookId/user/:userId')
+  /*@Get('book/:bookId/user/:userId')
   @UseGuards(AuthGuard)
   findByBookAndUser(
     @Param('bookId', ParseIntPipe) bookId: number,
     @Param('userId', ParseIntPipe) userId: number
   ) {
     return this.ratingService.findByBookAndUser(bookId, userId);
+  }*/
+
+  @Get('promedio')
+  getAverageRating() {
+    return this.ratingService.getPromedioRating();
   }
 }

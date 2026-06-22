@@ -31,4 +31,9 @@ export class UsersController {
     return this.usersService.getAffinityTable(currentUserId);
   }
 
+  @Get('count-lectores')
+  contarLectores() {
+    return this.usersService.contarLectores();
+  }
+
 }

@@ -46,4 +46,15 @@ export class RatingService {
     await this.ratingRepository.delete({ bookId });
     return ratings;
   }
+
+async getPromedioRating() {
+  const result = await this.ratingRepository
+    .createQueryBuilder('rating')
+    .select('AVG(rating.score)', 'average')
+    .getRawOne();
+
+  return {
+    average: Number(result.average) || 0,
+  };
+}
 }

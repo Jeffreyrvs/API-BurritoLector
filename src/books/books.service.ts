@@ -106,4 +106,12 @@ export class BooksService {
     await this.bookRepo.delete(id);
     return book;
   }
+
+  async contarLibros() {
+    const total = await this.bookRepo.count();
+
+    return {
+      total,
+    };
+  }
 }
