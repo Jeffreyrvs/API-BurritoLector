@@ -6,12 +6,14 @@ import { Genre } from '../genres/entities/genre.entity';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { PaginationQueryDto } from './dto/pagination-query.dto';
+import { SupabaseStorageService } from '../common/services/supabase-storage.service';
 
 @Injectable()
 export class BooksService {
   constructor(
     @InjectRepository(Book) private readonly bookRepo: Repository<Book>,
     @InjectRepository(Genre) private readonly genreRepo: Repository<Genre>,
+    private readonly supabaseStorageService: SupabaseStorageService,
   ) {}
 
   async findAll(query: PaginationQueryDto) {
@@ -42,14 +44,27 @@ export class BooksService {
     };
   }
 
-  async create(dto: CreateBookDto): Promise<Book> {
+  async create(dto: CreateBookDto, coverImage?: Express.Multer.File): Promise<Book> {
     const genres = await this.genreRepo.findBy({ id: In(dto.genreIds) });
+    
+    let coverImageUrl: string | null = null;
+    if (coverImage) {
+      const timestamp = Date.now();
+      const filename = `${timestamp}-${coverImage.originalname}`;
+      coverImageUrl = await this.supabaseStorageService.uploadFile(
+        coverImage,
+        'book-covers',
+        filename,
+      );
+    }
+
     const book = this.bookRepo.create({
       title: dto.title,
       author: dto.author,
       editor: dto.editor,
       synopsis: dto.synopsis,
       adminScore: dto.adminScore,
+      coverImageUrl,
       genres,
     });
     return this.bookRepo.save(book);
@@ -64,9 +79,21 @@ export class BooksService {
     return book;
   }
 
-  async update(id: number, dto: UpdateBookDto): Promise<Book> {
+  async update(id: number, dto: UpdateBookDto, coverImage?: Express.Multer.File): Promise<Book> {
     const book = await this.findOne(id);
     const { genreIds, ...scalar } = dto;
+    
+    // manejo de la nueva imagen de portada para el libro
+    if (coverImage) {
+      const timestamp = Date.now();
+      const filename = `${timestamp}-${coverImage.originalname}`;
+      book.coverImageUrl = await this.supabaseStorageService.uploadFile(
+        coverImage,
+        'book-covers',
+        filename,
+      );
+    }
+    
     Object.assign(book, scalar);
     if (genreIds) {
       book.genres = await this.genreRepo.findBy({ id: In(genreIds) });

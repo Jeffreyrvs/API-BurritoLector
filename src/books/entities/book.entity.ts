@@ -21,8 +21,8 @@ export class Book {
   @Column({ type: 'int' })
   adminScore!: number;
 
-  @Column({ nullable: true })
-  coverImageUrl!: string;
+  @Column({ nullable: true, type: 'varchar' })
+  coverImageUrl!: string | null;
 
   @Column({ type: 'float', default: 0 })
   communityScore!: number;
