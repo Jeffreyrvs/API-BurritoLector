@@ -46,4 +46,10 @@ export class RatingService {
     await this.ratingRepository.delete({ bookId });
     return ratings;
   }
+
+  async findByBookAndUser(bookId: number, userId: number) {
+  return this.ratingRepository.findOne({
+    where: { bookId, userId }
+  });
+}
 }

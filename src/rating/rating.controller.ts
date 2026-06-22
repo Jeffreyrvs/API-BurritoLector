@@ -43,4 +43,13 @@ export class RatingController {
   remove(@Param('bookId', ParseIntPipe) bookId: number) {
     return this.ratingService.remove(bookId);
   }
+
+  @Get('book/:bookId/user/:userId')
+  @UseGuards(AuthGuard)
+  findByBookAndUser(
+    @Param('bookId', ParseIntPipe) bookId: number,
+    @Param('userId', ParseIntPipe) userId: number
+  ) {
+    return this.ratingService.findByBookAndUser(bookId, userId);
+  }
 }
